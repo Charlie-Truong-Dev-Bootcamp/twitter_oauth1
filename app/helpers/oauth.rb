@@ -5,6 +5,7 @@ def oauth_consumer
     ENV['TWITTER_SECRET'],
     :site => "https://api.twitter.com"
   )
+
 end
 
 def request_token
@@ -19,4 +20,10 @@ def request_token
     )
   end
   session[:request_token]
+end
+
+
+def create_user
+
+
 end
