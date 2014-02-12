@@ -1,3 +1,4 @@
+
 get '/' do
   if session[:username]
     redirect ('/tweet')
@@ -22,21 +23,22 @@ end
 post '/tweet' do
   if session[:username]
     user = User.find_by(username: session[:username])
-    user.tweet(params[:tweet])
+    job_id = user.tweet(params[:tweet])
   end
+  content_type :json
+  {job_id: job_id, status: job_is_complete?(job_id)}.to_json
 end
 
 
 get '/auth' do
-
   @access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
-
   session.delete(:request_token)
-
-  user  = User.create(username: @access_token.params[:screen_name], oauth_token: @access_token.token, oauth_secret: @access_token.secret)
-
+  user = User.create_user(@access_token)
   session[:username] = user.username
-
   redirect ('/tweet')
+end
 
+get '/status/:job_id' do
+  puts "------------------------------------------------------"
+  (job_is_complete?(params[:job_id])).to_s
 end

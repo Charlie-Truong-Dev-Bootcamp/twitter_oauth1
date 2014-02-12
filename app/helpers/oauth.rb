@@ -23,7 +23,3 @@ def request_token
 end
 
 
-def create_user
-
-
-end
